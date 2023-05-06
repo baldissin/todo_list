@@ -8,24 +8,20 @@ class TodoListPage extends StatelessWidget {
     return Scaffold(
       body: Center(
         child: Padding(
-            padding: EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16),
             child: Column(
               mainAxisSize: MainAxisSize.min,
-              children: const [
-                ImageIcon(
-                  AssetImage("/home/allan/Documents/allan-workspace/StudioProjects/todo_list/lib/images/homeIcon.png"),
-                  color: Colors.red,
-                  size: 24,
-                ),
-                TextField(
+              children: [
+                Image.asset('assets/images/homeIcon.png', height: 150, width: 150),
+                const TextField(
                   decoration: InputDecoration(
-                    labelText: 'Login',
+                    labelText: 'Usuário',
                     errorText: null,
                   ),
                 ),
-                TextField(
+                const TextField(
                   decoration: InputDecoration(
-                    labelText: 'Password',
+                    labelText: 'Senha',
                     errorText: null,
                   ),
                   obscureText: true,
