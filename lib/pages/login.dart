@@ -12,6 +12,11 @@ class TodoListPage extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: const [
+                ImageIcon(
+                  AssetImage("/home/allan/Documents/allan-workspace/StudioProjects/todo_list/lib/images/homeIcon.png"),
+                  color: Colors.red,
+                  size: 24,
+                ),
                 TextField(
                   decoration: InputDecoration(
                     labelText: 'Login',
