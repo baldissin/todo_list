@@ -1,7 +1,13 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 
+
 class TodoListPage extends StatelessWidget {
-  const TodoListPage({Key? key}) : super(key: key);
+  TodoListPage({Key? key}) : super(key: key);
+
+  final TextEditingController loginController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -13,22 +19,73 @@ class TodoListPage extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Image.asset('assets/images/homeIcon.png', height: 150, width: 150),
-                const TextField(
-                  decoration: InputDecoration(
+                TextField(
+                  controller: loginController,
+                  decoration: const InputDecoration(
                     labelText: 'Usuário',
                     errorText: null,
                   ),
                 ),
-                const TextField(
-                  decoration: InputDecoration(
+                TextField(
+                  controller: passwordController,
+                  decoration: const InputDecoration(
                     labelText: 'Senha',
                     errorText: null,
                   ),
                   obscureText: true,
                 ),
+                ElevatedButton(onPressed: login, child: const Text('Entrar')),
               ],
             )),
       ),
     );
   }
+
+  void login() async {
+    var url = Uri.parse('http://localhost:8080/admin/login');
+    var body = jsonEncode(<String, dynamic>{
+      'login': loginController.text,
+      'password': passwordController.text,
+    });
+
+    var response = await http.post(url, body: body, headers: {
+      'Content-Type': 'application/json',
+    });
+
+    print(response.body.toString());
+
+    // String title = '';
+    // String message = '';
+    //
+    // if (response.statusCode == 200) {
+    //   title = 'Logou';
+    //   message = 'Autenticado com sucesso';
+    // } else {
+    //   title = 'algo deu errado';
+    //   message = response.body.toString();
+    // }
+
+    //showAlertDialog(context, title, message);
+  }
+
+  void showAlertDialog(BuildContext context, String title, String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: Text(message),
+          actions: [
+            TextButton(
+              child: Text('Fechar'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
 }
