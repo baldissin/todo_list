@@ -34,38 +34,43 @@ class LoginPage extends StatelessWidget {
                   ),
                   obscureText: true,
                 ),
-                ElevatedButton(onPressed: login, child: const Text('Entrar')),
+                Padding(
+                  padding: const EdgeInsets.all(30.0),
+                  child: ElevatedButton(onPressed: () => onPressed(context), child: const Text('Entrar')),
+                ),
               ],
             )),
       ),
     );
   }
 
-  void login() async {
+  void onPressed(BuildContext context) async {
+    String title = 'Algo deu errado';
+    String message = '';
+
     var url = Uri.parse('http://localhost:8080/admin/login');
     var body = jsonEncode(<String, dynamic>{
       'login': loginController.text,
       'password': passwordController.text,
     });
 
-    var response = await http.post(url, body: body, headers: {
-      'Content-Type': 'application/json',
-    });
+    try {
+      var response = await http.post(url, body: body, headers: {
+        'Content-Type': 'application/json',
+      });
 
-    print(response.body.toString());
+    if (response.statusCode == 200) {
+      title = 'Entrou';
+    } else {
+      //usuario ou senha errados
+    }
+      message = response.body.toString();
 
-    // String title = '';
-    // String message = '';
-    //
-    // if (response.statusCode == 200) {
-    //   title = 'Logou';
-    //   message = 'Autenticado com sucesso';
-    // } else {
-    //   title = 'algo deu errado';
-    //   message = response.body.toString();
-    // }
+    } on Exception catch (_, e){
+      message = 'Sem Conexão.';
+    }
 
-    //showAlertDialog(context, title, message);
+    showAlertDialog(context, title, message);
   }
 
   void showAlertDialog(BuildContext context, String title, String message) {
